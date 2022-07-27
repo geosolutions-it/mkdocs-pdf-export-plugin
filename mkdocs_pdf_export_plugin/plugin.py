@@ -4,7 +4,6 @@ from timeit import default_timer as timer
 
 from mkdocs.config import config_options
 from mkdocs.plugins import BasePlugin
-from mkdocs import utils
 
 class PdfExportPlugin(BasePlugin):
 
@@ -16,8 +15,7 @@ class PdfExportPlugin(BasePlugin):
         ('enabled_if_env', config_options.Type(str)),
         ('combined', config_options.Type(bool, default=False)),
         ('combined_output_path', config_options.Type(str, default="pdf/combined.pdf")),
-        ('theme_handler_path', config_options.Type(str)),
-        ('output_dir', config_options.Type(utils.string_types, default='site'))
+        ('theme_handler_path', config_options.Type(str))
     )
 
     def __init__(self):
@@ -59,8 +57,7 @@ class PdfExportPlugin(BasePlugin):
             return nav
 
         from .renderer import Renderer
-        # self.renderer = Renderer(self.combined, config['theme'].name, self.config['theme_handler_path'])
-        self.renderer = Renderer(self.combined, config['theme'].name, self.config['theme_handler_path'], self.config['output_dir'])
+        self.renderer = Renderer(self.combined, config['theme'].name, self.config['theme_handler_path'])
 
         self.renderer.pages = [None] * len(nav.pages)
         for page in nav.pages:
@@ -119,8 +116,7 @@ class PdfExportPlugin(BasePlugin):
 
             abs_pdf_path = os.path.join(config['site_dir'], self.config['combined_output_path'])
             os.makedirs(os.path.dirname(abs_pdf_path), exist_ok=True)
-            # self.renderer.write_combined_pdf(abs_pdf_path)
-            self.renderer.write_combined_pdf(abs_pdf_path, self.config['output_dir'])
+            self.renderer.write_combined_pdf(abs_pdf_path)
 
             end = timer()
             self.total_time += (end - start)
