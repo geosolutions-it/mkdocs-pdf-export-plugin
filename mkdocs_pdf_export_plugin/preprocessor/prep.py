@@ -14,10 +14,10 @@ def get_combined(soup: BeautifulSoup, base_url: str, rel_url: str):
             continue
 
         a['href'] = transform_href(a['href'], rel_url)
-    
+
     soup.body['id'] = get_body_id(rel_url)
     soup = replace_asset_hrefs(soup, base_url)
-    return soup
+    return soup 
 
 def get_separate(soup: BeautifulSoup, base_url: str):
     # transforms all relative hrefs pointing to other html docs
